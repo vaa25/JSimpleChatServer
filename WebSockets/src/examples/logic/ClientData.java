@@ -3,15 +3,18 @@ package examples.logic;
 import org.eclipse.jetty.websocket.api.Session;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by vaa25 on 22.02.2015.
  */
 public class ClientData {
+    private static Logger log = Logger.getLogger(ClientData.class.getName());
     private Person person;
     private Session session;
 
     public ClientData(String id) {
+        log.info("New ClientData(" + id + ") created");
         person = new Person();
         person.setId(id);
     }

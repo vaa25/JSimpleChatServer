@@ -10,24 +10,26 @@ import org.eclipse.jetty.websocket.api.annotations.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.logging.Logger;
 
 /**
  * Created by vaa25 on 25.02.2015.
  */
 @WebSocket
 public class MyWebSocket {
+    private static Logger log = Logger.getLogger(MyWebSocket.class.getName());
     private ClientDataBase dataBase;
 
     public MyWebSocket() {
         this.dataBase = ClientDataBase.INSTANCE;
-        System.out.println("MyWebSocket created");
+        log.info("New WebSocket created");
     }
 
     @OnWebSocketClose
     public void onWebSocketClose(Session session, int statusCode, String reason) throws UnsupportedEncodingException {
         final String id = session.getUpgradeRequest().getHeader("id");
         final String name = getNameFromSession(session);
-        System.out.println(name + " closed because of " + reason);
+        log.info("WebSocket " + name + " closed because of " + reason);
         remove(id, new Message(name + " вышел из чата"));
     }
 
@@ -35,7 +37,7 @@ public class MyWebSocket {
     public void onWebSocketConnect(Session session) throws UnsupportedEncodingException {
         final String id = session.getUpgradeRequest().getHeader("id");
         final String name = getNameFromSession(session);
-        System.out.println(name + " connected from " + session.getRemoteAddress());
+        log.info("WebSocket " + name + " connected from " + session.getRemoteAddress());
         ClientData clientData = new ClientData(id)
                 .addName(name)
                 .addSession(session);
@@ -58,6 +60,7 @@ public class MyWebSocket {
 
     @OnWebSocketMessage
     public void onWebSocketText(Session session, String data) {
+        log.info("WebSocket onWebSocketText: " + data);
         Message message = new Gson().fromJson(data, Message.class);
 
         if (message.getPerson().isOnline()) {

@@ -1,9 +1,12 @@
 package examples.logic;
 
+import java.util.logging.Logger;
+
 /**
  * @author Alexander Vlasov
  */
 public class Person {
+    private static Logger log = Logger.getLogger(Person.class.getName());
     private String name;
     private boolean online;
     private String id;
@@ -13,6 +16,7 @@ public class Person {
     }
 
     public Person(String name) {
+        log.info("New Person created: " + name);
         this.name = name;
         online = true;
         id = "defaultId";
@@ -41,6 +45,7 @@ public class Person {
     }
 
     public Person setName(String name) {
+        log.info("Person " + this.name + " renamed with " + name);
         this.name = name;
         return this;
     }

@@ -2,11 +2,13 @@ package examples.logic;
 
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author Alexander Vlasov
  */
 public class Message {
+    private static Logger log = Logger.getLogger(Message.class.getName());
     private Person person;
     private String text;
     private Enumeration special;
@@ -17,6 +19,7 @@ public class Message {
     }
 
     public Message(String text) {
+        log.info("New Message created: " + text);
         this.text = text;
     }
 
