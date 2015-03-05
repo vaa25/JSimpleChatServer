@@ -1,5 +1,7 @@
 package examples.logic;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -33,25 +35,31 @@ public class ClientDataBase {
         return result;
     }
 
-    public void sendToAll(Message message) {
+    public ClientDataBase sendToAll(Message message) {
+        String json = new Gson().toJson(message);
         for (ClientData clientData : map.values()) {
-            clientData.sendMessage(message);
+            clientData.sendJson(json);
         }
+        return this;
     }
 
     public ClientDataBase sendToAllExceptId(String id, Message message) {
+        String json = new Gson().toJson(message);
         for (ClientData clientData : map.values()) {
             if (!id.equals(clientData.getId())) {
-                clientData.sendMessage(message);
+                clientData.sendJson(json);
             }
         }
         return this;
     }
 
     public ClientDataBase sendToId(String id, Message message) {
-        map.get(id).sendMessage(message);
+        map.get(id).sendJson(new Gson().toJson(message));
         return this;
     }
 
 
+    public int size() {
+        return map.size();
+    }
 }

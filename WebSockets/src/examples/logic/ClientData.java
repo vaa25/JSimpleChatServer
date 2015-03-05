@@ -1,6 +1,5 @@
 package examples.logic;
 
-import com.google.gson.Gson;
 import org.eclipse.jetty.websocket.api.Session;
 
 import java.io.IOException;
@@ -31,15 +30,9 @@ public class ClientData {
         return person.getId();
     }
 
-    public String getName() {
-        return person.getName();
-    }
-
-    public boolean sendMessage(Message message) {
+    public boolean sendJson(String json) {
         try {
-            System.out.println(message.getPerson().getName() + " to " + getName() + " message ->" +
-                    new Gson().toJson(message));
-            session.getRemote().sendString(new Gson().toJson(message));
+            session.getRemote().sendString(json);
         } catch (IOException e) {
             e.printStackTrace();
             return false;

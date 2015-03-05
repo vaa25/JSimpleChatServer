@@ -11,12 +11,13 @@ public class Message {
     private String text;
     private Enumeration special;
     private List<Person> personList;
+    private Duel duel;
+
+    public Message() {
+    }
 
     public Message(String text) {
         this.text = text;
-        person = new Person("default");
-        special = null;
-        personList = null;
     }
 
     public Person getPerson() {
@@ -52,6 +53,15 @@ public class Message {
 
     public Message setPersonList(List<Person> personList) {
         this.personList = personList;
+        return this;
+    }
+
+    public Duel getDuel() {
+        return duel;
+    }
+
+    public Message setDuel(Duel duel) {
+        this.duel = duel;
         return this;
     }
 }

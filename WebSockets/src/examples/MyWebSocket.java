@@ -3,6 +3,7 @@ package examples;
 import com.google.gson.Gson;
 import examples.logic.ClientData;
 import examples.logic.ClientDataBase;
+import examples.logic.Duel;
 import examples.logic.Message;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.*;
@@ -58,8 +59,16 @@ public class MyWebSocket {
     @OnWebSocketMessage
     public void onWebSocketText(Session session, String data) {
         Message message = new Gson().fromJson(data, Message.class);
+
         if (message.getPerson().isOnline()) {
-            dataBase.sendToAll(message.setText(message.getPerson().getName() + ": " + message.getText()));
+            if (message.getDuel() != null) {
+                Duel duel = message.getDuel();
+                if ("request".equals(duel.getStatus())) {
+                    dataBase.sendToId(duel.getDestinationId(), message);
+                }
+            } else {
+                dataBase.sendToAll(message.setText(message.getPerson().getName() + ": " + message.getText()));
+            }
         } else {
             dataBase.removeById(session.getUpgradeRequest().getHeader("id"));
         }
