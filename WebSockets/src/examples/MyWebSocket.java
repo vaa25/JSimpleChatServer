@@ -10,6 +10,7 @@ import org.eclipse.jetty.websocket.api.annotations.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -55,7 +56,7 @@ public class MyWebSocket {
 
     @OnWebSocketError
     public void onWebSocketError(Throwable cause) {
-        cause.printStackTrace(System.err);
+        log.log(Level.SEVERE, "onWebSocketError: ", cause);
     }
 
     @OnWebSocketMessage

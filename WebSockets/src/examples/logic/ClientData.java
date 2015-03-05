@@ -46,4 +46,12 @@ public class ClientData {
     public Person getPerson() {
         return person;
     }
+
+    @Override
+    public String toString() {
+        return "ClientData{" +
+                "person=" + person +
+//                ", session=" + session +
+                '}';
+    }
 }

@@ -27,7 +27,7 @@ public class ClientDataBase {
     }
 
     public ClientDataBase add(ClientData clientData) {
-        log.info("ClientDataBase adds ClientData: " + clientData.getId());
+        log.info(clientData.toString());
         personList.add(clientData.getPerson());
         map.put(clientData.getId(), clientData);
         return this;
@@ -42,7 +42,7 @@ public class ClientDataBase {
 
     public ClientDataBase sendToAll(Message message) {
         String json = new Gson().toJson(message);
-        log.info("ClientDataBase sends to all json: " + json);
+        log.info(json);
         for (ClientData clientData : map.values()) {
             clientData.sendJson(json);
         }
@@ -51,7 +51,7 @@ public class ClientDataBase {
 
     public ClientDataBase sendToAllExceptId(String id, Message message) {
         String json = new Gson().toJson(message);
-        log.info("ClientDataBase sends to all except id=" + id + " json: " + json);
+        log.info("id=" + id + " json: " + json);
         for (ClientData clientData : map.values()) {
             if (!id.equals(clientData.getId())) {
                 clientData.sendJson(json);
@@ -62,7 +62,7 @@ public class ClientDataBase {
 
     public ClientDataBase sendToId(String id, Message message) {
         String json = new Gson().toJson(message);
-        log.info("ClientDataBase sends to id=" + id + " json: " + json);
+        log.info("id=" + id + " json: " + json);
         map.get(id).sendJson(json);
         return this;
     }
@@ -71,4 +71,6 @@ public class ClientDataBase {
     public int size() {
         return map.size();
     }
+
+
 }
