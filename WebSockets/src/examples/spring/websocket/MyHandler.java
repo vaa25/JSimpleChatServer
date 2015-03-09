@@ -1,10 +1,10 @@
 package examples.spring.websocket;
 
 import com.google.gson.Gson;
-import examples.logic.ClientData;
-import examples.logic.ClientDataBase;
-import examples.logic.Duel;
-import examples.logic.Message;
+import examples.spring.logic.ClientData;
+import examples.spring.logic.ClientDataBase;
+import examples.spring.logic.Duel;
+import examples.spring.logic.Message;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -12,11 +12,13 @@ import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.logging.Logger;
 
 /**
  * Created by vaa25 on 07.03.2015.
  */
 public class MyHandler extends AbstractWebSocketHandler {
+    private static Logger log = Logger.getLogger(MyHandler.class.getName());
     private ClientDataBase dataBase;
 
     public MyHandler() {
@@ -26,9 +28,10 @@ public class MyHandler extends AbstractWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        final String id = (String) session.getAttributes().get("id");
+        final String id = getIdFromSession(session);
         final String name = getNameFromSession(session);
-//        log.info("WebSocket " + name + " connected from " + session.getRemoteAddress());
+        log.info("WebSocket " + name + " connected from " + session.getRemoteAddress());
+
         ClientData clientData = new ClientData(id)
                 .addName(name)
                 .addSession(session);
@@ -43,9 +46,9 @@ public class MyHandler extends AbstractWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 
-        final String id = (String) session.getAttributes().get("id");
+        final String id = getIdFromSession(session);
         final String name = getNameFromSession(session);
-//        log.info("WebSocket " + name + " closed because of " + reason);
+        log.info("WebSocket " + name + " closed because of " + status.getReason());
         remove(id, new Message(name + " вышел из чата"));
     }
 
@@ -67,8 +70,13 @@ public class MyHandler extends AbstractWebSocketHandler {
     }
 
     private String getNameFromSession(WebSocketSession session) throws UnsupportedEncodingException {
-        return URLDecoder.decode((String) session.getAttributes().get("name"), "UTF-8");
+        return URLDecoder.decode(session.getHandshakeHeaders().getFirst("name"), "UTF-8");
     }
+
+    private String getIdFromSession(WebSocketSession session) {
+        return session.getHandshakeHeaders().getFirst("id");
+    }
+
 
     private void remove(String id, Message message) {
         dataBase.sendToAll(message.setPerson(dataBase.removeById(id).setOnline(false)));

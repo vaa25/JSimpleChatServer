@@ -1,16 +1,18 @@
-package examples.logic;
+package examples.spring.logic;
+
+import java.util.logging.Logger;
 
 /**
  * @author Alexander Vlasov
  */
 public class Duel {
-    //    private static Logger log = Logger.getLogger(Duel.class.getName());
+    private static Logger log = Logger.getLogger(Duel.class.getName());
     private String sourceId;
     private String destinationId;
     private String status;
 
     public Duel(String sourceId, String destinationId) {
-//        log.info("New Duel created: " + sourceId + " vs " + destinationId);
+        log.info("New Duel created: " + sourceId + " vs " + destinationId);
         this.sourceId = sourceId;
         this.destinationId = destinationId;
         status = "request";
