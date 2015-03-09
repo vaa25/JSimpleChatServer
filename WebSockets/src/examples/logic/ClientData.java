@@ -1,20 +1,22 @@
 package examples.logic;
 
 import org.eclipse.jetty.websocket.api.Session;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * Created by vaa25 on 22.02.2015.
  */
 public class ClientData {
-    private static Logger log = Logger.getLogger(ClientData.class.getName());
+    //    private static Logger log = Logger.getLogger(ClientData.class.getName());
     private Person person;
-    private Session session;
+    private Session jettySession;
+    private WebSocketSession springSession;
 
     public ClientData(String id) {
-        log.info("New ClientData(" + id + ") created");
+//        log.info("New ClientData(" + id + ") created");
         person = new Person();
         person.setId(id);
     }
@@ -25,7 +27,12 @@ public class ClientData {
     }
 
     public ClientData addSession(Session value) {
-        session = value;
+        jettySession = value;
+        return this;
+    }
+
+    public ClientData addSession(WebSocketSession value) {
+        springSession = value;
         return this;
     }
 
@@ -35,7 +42,11 @@ public class ClientData {
 
     public boolean sendJson(String json) {
         try {
-            session.getRemote().sendString(json);
+            if (jettySession != null) {
+                jettySession.getRemote().sendString(json);
+            } else if (springSession != null) {
+                springSession.sendMessage(new TextMessage(json));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -51,7 +62,7 @@ public class ClientData {
     public String toString() {
         return "ClientData{" +
                 "person=" + person +
-//                ", session=" + session +
+//    jettySession     jettySessionion=" + session +
                 '}';
     }
 }

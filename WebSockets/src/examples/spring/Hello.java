@@ -16,7 +16,7 @@ public class Hello {
 
     public static void main(String[] args) {
         //показываем Spring где лежит файл конфигурации
-        ApplicationContext ac = new ClassPathXmlApplicationContext(new String[]{"spring-config.xml"});
+        ApplicationContext ac = new ClassPathXmlApplicationContext(new String[]{"WEB-INF/mvc-dispatcher-servlet.xml"});
         //указываем id нашего bean-а
         Hello h = (Hello) ac.getBean("hello");
         h.sayHi();

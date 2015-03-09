@@ -15,7 +15,7 @@ public class Country {
     private Capital capital;
 
     public static void main(String[] args) {
-        ApplicationContext ac = new ClassPathXmlApplicationContext(new String[]{"spring-config.xml"});
+        ApplicationContext ac = new ClassPathXmlApplicationContext(new String[]{"WEB-INF/mvc-dispatcher-servlet.xml"});
 //        Country russia = (Country) ac.getBean("country");
 //        System.out.println(russia.getCapital().getName());
     }
