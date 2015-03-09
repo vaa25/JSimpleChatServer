@@ -1,6 +1,7 @@
 package examples.spring.logic;
 
 import com.google.gson.Gson;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,17 +11,22 @@ import java.util.logging.Logger;
 /**
  * Created by vaa25 on 22.02.2015.
  */
+@Component
 public class ClientDataBase {
-    public static final ClientDataBase INSTANCE = new ClientDataBase();
+    private static final ClientDataBase INSTANCE = new ClientDataBase();
     private static Logger log = Logger.getLogger(ClientDataBase.class.getName());
     private ConcurrentHashMap<String, ClientData> map;
     private List<Person> personList;
 
     private ClientDataBase() {
-        System.out.println(log);
         log.info("New ClientDataBase created");
         this.personList = new CopyOnWriteArrayList<>();
         map = new ConcurrentHashMap<>();
+    }
+
+
+    public static ClientDataBase getInstance() {
+        return INSTANCE;
     }
 
     public List<Person> getPersonList() {

@@ -5,6 +5,7 @@ import examples.spring.logic.ClientData;
 import examples.spring.logic.ClientDataBase;
 import examples.spring.logic.Duel;
 import examples.spring.logic.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -18,12 +19,17 @@ import java.util.logging.Logger;
  * Created by vaa25 on 07.03.2015.
  */
 public class MyHandler extends AbstractWebSocketHandler {
+
     private static Logger log = Logger.getLogger(MyHandler.class.getName());
+    @Autowired
     private ClientDataBase dataBase;
 
-    public MyHandler() {
-        super();
-        this.dataBase = ClientDataBase.INSTANCE;
+    public ClientDataBase getDataBase() {
+        return dataBase;
+    }
+
+    public void setDataBase(ClientDataBase dataBase) {
+        this.dataBase = dataBase;
     }
 
     @Override

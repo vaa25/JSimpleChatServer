@@ -18,7 +18,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private static Logger log = Logger.getLogger(WebSocketConfig.class.getName());
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(myHandler(), "/jsimplechat");
+        log.info("register MyHandler");
+        registry.addHandler(myHandler(), "/JSimpleChatServer/jsimplechat");
     }
 
     @Bean
